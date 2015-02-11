@@ -1,0 +1,20 @@
+sphinxweb:
+  image: shimizukawa/sphinxwebapp:latest
+  volumes:
+    - ./conf/sphinxweb:/app/config2
+    - ./doc:/doc/source
+    - ./var/build:/doc/build
+    - ./var/sphinxweb:/var/sphinxweb
+  environment:
+    SPHINXWEB_SETTINGS: /app/config2/sphinxweb.cfg
+
+nginx:
+  image: nginx:latest
+  links:
+    - sphinxweb
+  volumes:
+    - ./conf/nginx/conf.d:/etc/nginx/conf.d
+    - ./var/log/nginx:/var/log/nginx
+  ports:
+    - '80:80'
+
